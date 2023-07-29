@@ -1,0 +1,13 @@
+version: '3'
+services:
+  devcon:
+    container_name: 'devcon'
+    hostname: 'josh'
+    build: .
+    restart: always
+    working_dir: '/work'
+    tty: true
+    volumes:
+      - type: bind
+        source: ../work
+        target: /work
