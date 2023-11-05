@@ -5,14 +5,19 @@ DEVEL_UID   := $(shell id -u)
 DEVEL_GROUP := $(shell id -gn)
 DEVEL_GID   := $(shell id -g)
 
-.PHONY: devel
 devel:
 	sudo docker container run -it --rm \
 		-v ${PWD}/app:/app \
+		-v /app/node_modules \
 		-w /app \
 		-u root \
 		${NODE_IMAGE} /bin/bash -c "\
 		    groupadd -g ${DEVEL_GID} ${DEVEL_GROUP} \
 		    && useradd -g ${DEVEL_GID} -u ${DEVEL_UID} -m -s /bin/bash ${DEVEL_USER} \
+		    && chown -R ${DEVEL_USER}:${DEVEL_GROUP} /app/node_modules \
 		    && su ${DEVEL_USER} \
 		"
+
+.PHONY: build
+build:
+	sudo docker-compose build --build-arg NODE_IMAGE=${NODE_IMAGE}
