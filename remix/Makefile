@@ -18,6 +18,6 @@ create_env:
 		    && su ${DEVEL_USER} \
 		"
 
-.PHONY: build
-build:
+.PHONY: build_image
+build_image:
 	sudo docker-compose build --build-arg NODE_IMAGE=${NODE_IMAGE}
